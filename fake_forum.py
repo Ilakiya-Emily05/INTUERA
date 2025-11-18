@@ -2,7 +2,6 @@ import streamlit as st
 import random
 import time
 import json
-import pandas as pd
 
 st.set_page_config(
     page_title="DarkBazaar BlackSite",
@@ -33,14 +32,14 @@ posts = [
     for _ in range(25)
 ]
 
-# Expose JSON feed for scraper (INTUERA)
+# Expose JSON feed for scraper but hide it from view
 json_blob = json.dumps(posts)
 st.markdown(
-    f"<pre id='intuera-feed' style='display:none'>{json_blob}</pre>",
+    f"<div id='intuera-feed' style='display:none'>{json_blob}</div>",
     unsafe_allow_html=True
 )
 
-# ---------------------- CSS DARK WEB UPGRADE ----------------------
+# ---------------------- CSS DARK WEB ----------------------
 dark_css = """
 <style>
 body { background: #000000; color: #fff; }
@@ -154,7 +153,7 @@ st.subheader("💀 Live DarkFeed (Simulated)")
 feed_placeholder = st.empty()
 
 if st.button("Start Feed"):
-    for i in range(20):
+    for _ in range(20):
         msg = random.choice([
             "Tunneling into node 56... AUTH REFUSED",
             "New leak detected in synthetic vault.",
