@@ -2,6 +2,7 @@ import streamlit as st
 import random
 import time
 import json
+import pandas as pd
 
 st.set_page_config(
     page_title="DarkBazaar BlackSite",
@@ -11,7 +12,8 @@ st.set_page_config(
 )
 
 # ---------------------- SIM DATA FOR SCRAPER ----------------------
-fake_data = [
+# Generate 25 fake posts for INTUERA to scrape
+posts = [
     {
         "username": random.choice(["zeroGhost", "blackHydra", "NovaRogue", "shadeByte"]),
         "cve": random.choice(["CVE-2025-1221", "CVE-2024-8819", "CVE-2023-9921", "None"]),
@@ -31,18 +33,17 @@ fake_data = [
     for _ in range(25)
 ]
 
-# Expose JSON for your INTUERA scraper:
-json_blob = json.dumps(fake_data)
-
+# Expose JSON feed for scraper (INTUERA)
+json_blob = json.dumps(posts)
 st.markdown(
-    f"<script id='darkbazaar-data' type='application/json'>{json_blob}</script>",
+    f"<pre id='intuera-feed' style='display:none'>{json_blob}</pre>",
     unsafe_allow_html=True
 )
 
 # ---------------------- CSS DARK WEB UPGRADE ----------------------
 dark_css = """
 <style>
-body { background: #000000; }
+body { background: #000000; color: #fff; }
 
 @keyframes glitch1 {
   0% { text-shadow: 3px 3px #ff003c; }
@@ -123,7 +124,6 @@ st.markdown(dark_css, unsafe_allow_html=True)
 # ---------------------- HEADER ----------------------
 st.markdown("<div class='glitch-header'>DARKBAZAAR BLACKSITE</div>", unsafe_allow_html=True)
 st.markdown("<div class='static-overlay'></div>", unsafe_allow_html=True)
-
 st.markdown("<h5 style='text-align:center; color:#888; font-family:monospace;'>Tor Mirror v5 / Encrypted Simulation Node</h5>", unsafe_allow_html=True)
 
 # ---------------------- FAKE ANTIVIRUS SCAN ----------------------
@@ -151,7 +151,6 @@ with col3:
 
 # ---------------------- LIVE FEED ----------------------
 st.subheader("💀 Live DarkFeed (Simulated)")
-
 feed_placeholder = st.empty()
 
 if st.button("Start Feed"):
@@ -167,4 +166,4 @@ if st.button("Start Feed"):
         time.sleep(0.35)
 
 # ---------------------- FOOTER ----------------------
-st.markdown("<div style='text-align:center; margin-top:50px; color:#333;'>Simulation Only. No real darknet services are accessed.</div>", unsafe_allow_html=True)
+st.markdown("<div style='text-align:center; margin-top:50px; color:#888;'>Simulation Only. No real darknet services are accessed.</div>", unsafe_allow_html=True)
