@@ -1,6 +1,7 @@
 import streamlit as st
 import random
 import time
+import json
 
 st.set_page_config(
     page_title="DarkBazaar BlackSite",
@@ -9,15 +10,40 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# ---------------------- SIM DATA FOR SCRAPER ----------------------
+fake_data = [
+    {
+        "username": random.choice(["zeroGhost", "blackHydra", "NovaRogue", "shadeByte"]),
+        "cve": random.choice(["CVE-2025-1221", "CVE-2024-8819", "CVE-2023-9921", "None"]),
+        "btc": random.randint(0, 5),
+        "category": random.choice(["scam", "exploit", "malware", "cred-sale", "fraud"]),
+        "sentiment": random.choice(["hostile", "neutral", "risky"]),
+        "text": random.choice([
+            "Selling premium logs batch.",
+            "Fresh exploit pack ready.",
+            "Leaking corporate vault backup.",
+            "New infostealer variant compiled.",
+            "BTC mixer request received."
+        ]),
+        "risk": random.randint(1, 10),
+        "location": random.choice(["US", "IN", "RU", "BR", "CN"])
+    }
+    for _ in range(25)
+]
+
+# Expose JSON for your INTUERA scraper:
+json_blob = json.dumps(fake_data)
+
+st.markdown(
+    f"<script id='darkbazaar-data' type='application/json'>{json_blob}</script>",
+    unsafe_allow_html=True
+)
+
 # ---------------------- CSS DARK WEB UPGRADE ----------------------
 dark_css = """
 <style>
+body { background: #000000; }
 
-body {
-    background: #000000;
-}
-
-/* Glitch Title */
 @keyframes glitch1 {
   0% { text-shadow: 3px 3px #ff003c; }
   50% { text-shadow: -3px -3px #00eaff; }
@@ -33,7 +59,6 @@ body {
     animation: glitch1 1s infinite;
 }
 
-/* Static Scan Overlay */
 @keyframes staticMove {
   0% {opacity: .15;}
   50% {opacity: .35;}
@@ -50,7 +75,6 @@ body {
     margin-bottom: 20px;
 }
 
-/* Terminal Blocks */
 .terminal-block {
     background: #050505;
     border-left: 4px solid #00eaff;
@@ -61,7 +85,6 @@ body {
     font-size: 15px;
 }
 
-/* Fake Warnings */
 .warning-box {
     background: #ff003c;
     color: black;
@@ -93,10 +116,8 @@ body {
     transform: scale(1.05);
     background: #1a0007;
 }
-
 </style>
 """
-
 st.markdown(dark_css, unsafe_allow_html=True)
 
 # ---------------------- HEADER ----------------------
@@ -105,13 +126,13 @@ st.markdown("<div class='static-overlay'></div>", unsafe_allow_html=True)
 
 st.markdown("<h5 style='text-align:center; color:#888; font-family:monospace;'>Tor Mirror v5 / Encrypted Simulation Node</h5>", unsafe_allow_html=True)
 
-# ---------------------- FAKE ANTIVIRUS SCAN TRIGGER ----------------------
+# ---------------------- FAKE ANTIVIRUS SCAN ----------------------
 if st.button("⚠️ Trigger System Scan"):
     st.markdown("<div class='warning-box'>⚠️ WARNING: Suspicious activity detected. System integrity compromised.</div>", unsafe_allow_html=True)
     time.sleep(1)
     st.code("SCAN_STATUS: MALWARE_SIMULATED\nRISK_LEVEL: CRITICAL\nRECOMMENDATION: Disconnect immediately.", language="bash")
 
-# ---------------------- "FREE OFFER" BUTTONS ----------------------
+# ---------------------- FAKE OFFERS ----------------------
 st.subheader("🎁 Underground Offers (Fake)")
 
 col1, col2, col3 = st.columns(3)
@@ -128,37 +149,7 @@ with col3:
     if st.button("Get Free Zero-Day Pack"):
         st.markdown("<div class='warning-box'>🚨 SECURITY NOTICE: Zero-day exploit blocked.</div>", unsafe_allow_html=True)
 
-# ---------------------- LISTINGS ----------------------
-st.subheader("🕷️ Marketplace Listings")
-
-listings = [
-    ("StealthBank Logs", "$150", "Mixed regions. Updated hourly."),
-    ("FireLunge Exploit Pack", "$350", "Simulated vulnerabilities."),
-    ("Corporate Leak Bundle", "$40", "Fictional dataset for testing."),
-    ("Botnet Rental", "$20/hr", "Simulated DDoS traffic."),
-]
-
-chosen_listing = None
-
-for i, (title, price, desc) in enumerate(listings):
-    if st.button(f"{title} | {price}", key=f"item_{i}"):
-        chosen_listing = (title, price, desc)
-
-# ---------------------- POPUP MODAL ----------------------
-if chosen_listing:
-    title, price, desc = chosen_listing
-    st.markdown(f"""
-    <div class='warning-box'>
-        ACCESS BLOCKED: {title}
-    </div>
-    """, unsafe_allow_html=True)
-    st.code(
-        f"REQUEST_DENIED: {title.replace(' ','_').upper()}\n"
-        f"REASON: Authentication required\n"
-        f"SIMULATION: SAFE", language="bash"
-    )
-
-# ---------------------- TERMINAL FEED ----------------------
+# ---------------------- LIVE FEED ----------------------
 st.subheader("💀 Live DarkFeed (Simulated)")
 
 feed_placeholder = st.empty()
